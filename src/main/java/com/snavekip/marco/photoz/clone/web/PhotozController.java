@@ -19,7 +19,6 @@ public class PhotozController {
         this.photozService = photozService;
     }
 
-    // private String id;
 
 
     @GetMapping("/")
@@ -28,28 +27,27 @@ public class PhotozController {
     }
 
     @GetMapping("/photoz")
-    public Collection<Photo> get() {
+    public Iterable<Photo> get() {
 
         return photozService.get();
     }
 
     @GetMapping("/photoz/{id}")
-    public Photo get(@PathVariable String id) {
+    public Photo get(@PathVariable Integer id) {
         Photo photo = photozService.get(id);
         if (photo == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         return photo;
     }
 
     @DeleteMapping("/photoz/{id}")
-    public void delete(@PathVariable String id) {
-        Photo photo = photozService.remove(id);
-        if (photo == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    public void delete(@PathVariable Integer id) {
+        photozService.remove(id);
+
     }
 
     @PostMapping("/photoz")
     public Photo create(@RequestPart("data") MultipartFile File) throws IOException {
-        Photo photo= photozService.save(File.getOriginalFilename(), File.getContentType(), File.getBytes());
-        return photo;
+        return photozService.save(File.getOriginalFilename(), File.getContentType(), File.getBytes());
 
     }
 
